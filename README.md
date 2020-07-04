@@ -1,0 +1,1 @@
+# CoreHal.Reader.Json.Microsoft
