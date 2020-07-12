@@ -1,7 +1,6 @@
 ﻿using CoreHal.Graph;
 using System;
 using System.Collections.Generic;
-using Validation;
 
 namespace CoreHal.Reader
 {
@@ -17,11 +16,6 @@ namespace CoreHal.Reader
             Links = new Dictionary<string, IEnumerable<Link>>();
             Properties = new Dictionary<string, object>();
             EmbeddedItems = new Dictionary<string, IEnumerable<HalReader>>();
-        }
-
-        public HalReader(IJsonDictionaryReader reader)
-        {
-
         }
     }
 }
