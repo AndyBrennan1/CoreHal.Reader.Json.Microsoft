@@ -20,11 +20,13 @@ steps:
 
 # RESTORE PACKAGES ------------------------------------------------------------------------
 
-- task: DotNetCoreCLI@2
-  displayName: Restore
+- task: NuGetCommand@2
+  displayName: Restore from Nuget.org & Andys Feed
   inputs:
-    command: restore
-    projects: '**/*.csproj'
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'select'
+    vstsFeed: 'e5f71a34-4c69-4ed2-80f5-a8037477d684/796901c8-ecc5-497c-a540-df6484e6de9b'
 
 # BUILD ------------------------------------------------------------------------------------
 
