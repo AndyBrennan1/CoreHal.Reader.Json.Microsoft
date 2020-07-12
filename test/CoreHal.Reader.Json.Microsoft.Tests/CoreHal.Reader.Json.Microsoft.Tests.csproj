@@ -30,19 +30,4 @@
     <ProjectReference Include="..\..\src\CoreHal.Reader.Json.Microsoft\CoreHal.Reader.Json.Microsoft.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Compile Update="Resources\JsonExamples.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>JsonExamples.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="Resources\JsonExamples.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>JsonExamples.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-
 </Project>
