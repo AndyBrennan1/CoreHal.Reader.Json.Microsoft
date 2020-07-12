@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CoreHal.Reader" Version="1.0.0-CI-20200712-132217" />
+    <PackageReference Include="Validation" Version="2.4.22" />
+  </ItemGroup>
+
+</Project>

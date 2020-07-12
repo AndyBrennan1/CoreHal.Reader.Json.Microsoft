@@ -1,0 +1,122 @@
+{
+  "_links": {
+    "self": {
+      "href": "/api/components/30cl-black/associated-components"
+    },
+    "parent": {
+      "href": "/api/components/30cl-black"
+    },
+    "all-components": {
+      "href": "/api/components"
+    },
+    "component-types": {
+      "href": "/api/categories/component-types"
+    },
+    "measurement-types": {
+      "href": "/api/categories/measurement-types"
+    }
+  },
+  "number-Of-Components": 3,
+  "_embedded": {
+    "waxes": [
+      {
+        "_links": {
+          "self": {
+            "href": "/api/components/kerasoy"
+          }
+        },
+        "id": "56a7d0c3-68fa-4378-b518-08d8201196be",
+        "component-Type": {
+          "Id": "b1237f83-fdc8-4545-81b1-08d8201196b1",
+          "LinkName": "waxes",
+          "DisplayName": "Waxes"
+        },
+        "link-Name": "kerasoy",
+        "display-Name": "KeraSoy",
+        "description": "Very very waxy",
+        "supplier-Code": "?????",
+        "supplier-Product-Url": "http://www.yugencandles.co.uk/",
+        "pack-Size": 25000,
+        "pack-Measurement-Type": {
+          "Id": "7af544fe-d589-4fad-81bb-08d8201196b1",
+          "LinkName": "grams",
+          "DisplayName": "Grams"
+        },
+        "unit-Size": 1,
+        "unit-Measurement-Type": {
+          "Id": "7af544fe-d589-4fad-81bb-08d8201196b1",
+          "LinkName": "grams",
+          "DisplayName": "Grams"
+        },
+        "pack-Price": 80.98,
+        "unit-Price": 0.0032392
+      }
+    ],
+    "wicks": [
+      {
+        "_links": {
+          "self": {
+            "href": "/api/components/lc1"
+          }
+        },
+        "id": "f6f0567f-35a2-4161-b515-08d8201196be",
+        "component-Type": {
+          "Id": "c0bd43bb-96b9-48d8-81ac-08d8201196b1",
+          "LinkName": "wicks",
+          "DisplayName": "Wicks"
+        },
+        "link-Name": "lc1",
+        "display-Name": "LC1",
+        "description": "This is a crackling wooden wick",
+        "supplier-Code": "WICK00001",
+        "supplier-Product-Url": "http://www.yugencandles.co.uk/",
+        "pack-Size": 10,
+        "pack-Measurement-Type": {
+          "Id": "bb8fda98-0af6-4164-81be-08d8201196b1",
+          "LinkName": "pre-unit",
+          "DisplayName": "Per Unit"
+        },
+        "unit-Size": 1,
+        "unit-Measurement-Type": {
+          "Id": "bb8fda98-0af6-4164-81be-08d8201196b1",
+          "LinkName": "pre-unit",
+          "DisplayName": "Per Unit"
+        },
+        "pack-Price": 10.00,
+        "unit-Price": 1.00
+      },
+      {
+        "_links": {
+          "self": {
+            "href": "/api/components/normal-ww"
+          }
+        },
+        "id": "fea6e912-9ae9-46e0-b516-08d8201196be",
+        "component-Type": {
+          "Id": "c0bd43bb-96b9-48d8-81ac-08d8201196b1",
+          "LinkName": "wicks",
+          "DisplayName": "Wicks"
+        },
+        "link-Name": "normal-ww",
+        "display-Name": "NORMAL WW",
+        "description": "This is a normal wooden wick",
+        "supplier-Code": "WICK00002",
+        "supplier-Product-Url": "http://www.yugencandles.co.uk/",
+        "pack-Size": 10,
+        "pack-Measurement-Type": {
+          "Id": "bb8fda98-0af6-4164-81be-08d8201196b1",
+          "LinkName": "pre-unit",
+          "DisplayName": "Per Unit"
+        },
+        "unit-Size": 1,
+        "unit-Measurement-Type": {
+          "Id": "bb8fda98-0af6-4164-81be-08d8201196b1",
+          "LinkName": "pre-unit",
+          "DisplayName": "Per Unit"
+        },
+        "pack-Price": 10.00,
+        "unit-Price": 1.00
+      }
+    ]
+  }
+}
