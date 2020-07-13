@@ -1,14 +1,12 @@
-﻿using CoreHal.Graph;
-using DeepEqual.Syntax;
+﻿using DeepEqual.Syntax;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using Xunit;
 
 namespace CoreHal.Reader.Json.Microsoft.Tests
 {
-    public class DeserializerTests
+    public class HalResponseConvertorTests
     {
         [Fact]
         public void Reading_EmptyJsonString_ReturnsEmptyHalReader()
@@ -16,19 +14,14 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             var jsonString = "{ }";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
-           
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
 
-            Assert.IsType<HalReader>(result);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
+
+            Assert.IsAssignableFrom<IDictionary<string, object>>(result);
             Assert.NotNull(result);
-            Assert.NotNull(result.EmbeddedItems);
-            Assert.NotNull(result.Links);
-            Assert.NotNull(result.Properties);
-            Assert.Empty(result.EmbeddedItems);
-            Assert.Empty(result.Links);
-            Assert.Empty(result.Properties);
+            Assert.Empty(result);
         }
 
         [Fact]
@@ -37,16 +30,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             var jsonString = "{ \"string-Property\": \"test value\" }";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["string-Property"]);
-            Assert.IsType<string>(result.Properties["string-Property"]);
-            Assert.Equal(expected: "test value", actual: result.Properties["string-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["string-Property"]);
+            Assert.IsType<string>(result["string-Property"]);
+            Assert.Equal(expected: "test value", actual: result["string-Property"]);
         }
 
         [Fact]
@@ -58,17 +51,17 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                              "}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.IsType<string>(result.Properties["string-Property"]);
-            Assert.IsType<string>(result.Properties["string-Property2"]);
-            Assert.Equal(expected: 2, actual: result.Properties.Count);
-            Assert.Equal(expected: "test value", actual: result.Properties["string-Property"]);
-            Assert.Equal(expected: "test value2", actual: result.Properties["string-Property2"]);
+            Assert.NotNull(result);
+            Assert.IsType<string>(result["string-Property"]);
+            Assert.IsType<string>(result["string-Property2"]);
+            Assert.Equal(expected: 2, actual: result.Count);
+            Assert.Equal(expected: "test value", actual: result["string-Property"]);
+            Assert.Equal(expected: "test value2", actual: result["string-Property2"]);
         }
 
         [Fact]
@@ -79,16 +72,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             const double expectedResult = 123;
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["integer-Property"]);
-            Assert.IsType<double>(result.Properties["integer-Property"]);
-            Assert.Equal(expected: expectedResult, actual: result.Properties["integer-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["integer-Property"]);
+            Assert.IsType<double>(result["integer-Property"]);
+            Assert.Equal(expected: expectedResult, actual: result["integer-Property"]);
         }
 
         [Fact]
@@ -99,16 +92,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             double expectedResult = Int64.MaxValue;
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["integer-Property"]);
-            Assert.IsType<double>(result.Properties["integer-Property"]);
-            Assert.Equal(expected: expectedResult, actual: result.Properties["integer-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["integer-Property"]);
+            Assert.IsType<double>(result["integer-Property"]);
+            Assert.Equal(expected: expectedResult, actual: result["integer-Property"]);
         }
 
         [Fact]
@@ -119,16 +112,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             double expectedResult = Int64.MinValue;
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["integer-Property"]);
-            Assert.IsType<double>(result.Properties["integer-Property"]);
-            Assert.Equal(expected: expectedResult, actual: result.Properties["integer-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["integer-Property"]);
+            Assert.IsType<double>(result["integer-Property"]);
+            Assert.Equal(expected: expectedResult, actual: result["integer-Property"]);
         }
 
         [Fact]
@@ -139,16 +132,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             double expectedResult = (double)123.23M;
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["integer-Property"]);
-            Assert.IsType<double>(result.Properties["integer-Property"]);
-            Assert.Equal(expected: expectedResult, actual: result.Properties["integer-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["integer-Property"]);
+            Assert.IsType<double>(result["integer-Property"]);
+            Assert.Equal(expected: expectedResult, actual: result["integer-Property"]);
         }
 
         [Fact]
@@ -159,16 +152,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             double expectedResult = double.MaxValue;
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["integer-Property"]);
-            Assert.IsType<double>(result.Properties["integer-Property"]);
-            Assert.Equal(expected: expectedResult, actual: result.Properties["integer-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["integer-Property"]);
+            Assert.IsType<double>(result["integer-Property"]);
+            Assert.Equal(expected: expectedResult, actual: result["integer-Property"]);
         }
 
         [Fact]
@@ -179,16 +172,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             const double expectedResult = 999.999F;
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["integer-Property"]);
-            Assert.IsType<double>(result.Properties["integer-Property"]);
-            Assert.Equal(expected: Math.Round(expectedResult,3), actual: result.Properties["integer-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["integer-Property"]);
+            Assert.IsType<double>(result["integer-Property"]);
+            Assert.Equal(expected: Math.Round(expectedResult, 3), actual: result["integer-Property"]);
         }
 
         [Fact]
@@ -199,16 +192,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             var jsonString = $"{{ \"date-Property\": \"2020-07-09T10:51:12\" }}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["date-Property"]);
-            Assert.IsType<DateTime>(result.Properties["date-Property"]);
-            Assert.Equal(expected: thisDate, actual: (DateTime)result.Properties["date-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["date-Property"]);
+            Assert.IsType<DateTime>(result["date-Property"]);
+            Assert.Equal(expected: thisDate, actual: (DateTime)result["date-Property"]);
         }
 
         [Fact]
@@ -219,16 +212,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             var jsonString = $"{{ \"guid-Property\": \"1b935602-b202-4246-b48b-8e17291e5376\" }}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["guid-Property"]);
-            Assert.IsType<Guid>(result.Properties["guid-Property"]);
-            Assert.Equal(expected: thisGuid, actual: Guid.Parse(result.Properties["guid-Property"].ToString()));
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["guid-Property"]);
+            Assert.IsType<Guid>(result["guid-Property"]);
+            Assert.Equal(expected: thisGuid, actual: Guid.Parse(result["guid-Property"].ToString()));
         }
 
         [Fact]
@@ -239,16 +232,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             var jsonString = $"{{ \"boolean-Property\": true }}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["boolean-Property"]);
-            Assert.IsType<bool>(result.Properties["boolean-Property"]);
-            Assert.Equal(expected: thisBoolean, actual: bool.Parse(result.Properties["boolean-Property"].ToString()));
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["boolean-Property"]);
+            Assert.IsType<bool>(result["boolean-Property"]);
+            Assert.Equal(expected: thisBoolean, actual: bool.Parse(result["boolean-Property"].ToString()));
         }
 
         [Fact]
@@ -259,16 +252,16 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             var jsonString = $"{{ \"boolean-Property\": false }}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.NotNull(result.Properties["boolean-Property"]);
-            Assert.IsType<bool>(result.Properties["boolean-Property"]);
-            Assert.Equal(expected: thisBoolean, actual: bool.Parse(result.Properties["boolean-Property"].ToString()));
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.NotNull(result["boolean-Property"]);
+            Assert.IsType<bool>(result["boolean-Property"]);
+            Assert.Equal(expected: thisBoolean, actual: bool.Parse(result["boolean-Property"].ToString()));
         }
 
         [Fact]
@@ -277,14 +270,14 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             var jsonString = $"{{ \"some-Property\": null }}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.Null(result.Properties["some-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Null(result["some-Property"]);
         }
 
         [Fact]
@@ -299,10 +292,10 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
             var expectedDictionary = new Dictionary<string, object>
             {
@@ -310,9 +303,9 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                 { "property2", "world" }
             };
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.Equal(expected: expectedDictionary, actual: result.Properties["complex-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal(expected: expectedDictionary, actual: result["complex-Property"]);
         }
 
         [Fact]
@@ -326,32 +319,32 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                                             $"\"second-complex-property\": " +
                                                 $"{{ " +
                                                     $"\"propertyA\": \"bonjour\"," +
-                                                    $"\"propertyB\": \"le monde\"" + 
+                                                    $"\"propertyB\": \"le monde\"" +
                                                 $"}} " +
                                         $"}} " +
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
             var expectedDictionary = new Dictionary<string, object>
             {
                 { "property1", "hello" },
                 { "property2", "world" },
-                { "second-complex-property", new Dictionary<string, object> 
+                { "second-complex-property", new Dictionary<string, object>
                     {
                         { "propertyA", "bonjour" },
                         { "propertyB", "le monde" },
-                    } 
+                    }
                 }
             };
 
-            Assert.NotNull(result.Properties);
-            Assert.Single(result.Properties);
-            Assert.Equal(expected: expectedDictionary, actual: result.Properties["complex-Property"]);
+            Assert.NotNull(result);
+            Assert.Single(result);
+            Assert.Equal(expected: expectedDictionary, actual: result["complex-Property"]);
         }
 
         [Fact]
@@ -374,10 +367,10 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
             var expectedDictionary = new Dictionary<string, object>
             {
@@ -391,10 +384,10 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                 }
             };
 
-            Assert.Equal(expected: "once", actual: result.Properties["story"].ToString());
-            Assert.Equal(expected: "upon a time", actual: result.Properties["start"].ToString());
-            Assert.Equal(expected: expectedDictionary, actual: result.Properties["complex-Property"]);
-            Assert.Equal(expected: "the end", actual: result.Properties["end"].ToString());
+            Assert.Equal(expected: "once", actual: result["story"].ToString());
+            Assert.Equal(expected: "upon a time", actual: result["start"].ToString());
+            Assert.Equal(expected: expectedDictionary, actual: result["complex-Property"]);
+            Assert.Equal(expected: "the end", actual: result["end"].ToString());
         }
 
         [Fact]
@@ -413,23 +406,31 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var expectedLinks = new Dictionary<string, IEnumerable<Link>>
+            var expectedDictionary = new Dictionary<string, object>
             {
-                { 
-                    "self", 
-                    new List<Link>
+                {
+                    "_links",
+                    new Dictionary<string, IDictionary<string, object>>
                     {
-                        new Link("/api/categories", "Some Title")
+                        {
+                            "self",
+                            new Dictionary<string, object>
+                            {
+                                { "href", "/api/categories" },
+                                { "title", "Some Title" },
+                                { "templated", false }
+                            }
+                        }
                     }
                 }
             };
 
-            expectedLinks.ShouldDeepEqual(result.Links);
+            expectedDictionary.ShouldDeepEqual(result);
         }
 
         [Fact]
@@ -453,28 +454,39 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var expectedLinks = new Dictionary<string, IEnumerable<Link>>
+            var expectedDictionary = new Dictionary<string, object>
             {
-                { 
-                    "self", new List<Link>
-                    {
-                        new Link("/api/categories/123", "Category")
-                    }
-                },
                 {
-                    "parent", new List<Link>
+                    "_links",
+                    new Dictionary<string, IDictionary<string, object>>
                     {
-                        new Link("/api/categories", "Categories")
+                        {
+                            "self",
+                            new Dictionary<string, object>
+                            {
+                                { "href", "/api/categories/123" },
+                                { "title", "Category" },
+                                { "templated", false }
+                            }
+                        },
+                         {
+                            "parent",
+                            new Dictionary<string, object>
+                            {
+                                { "href", "/api/categories" },
+                                { "title", "Categories" }
+                            }
+                        }
                     }
                 }
             };
 
-            expectedLinks.ShouldDeepEqual(result.Links);
+            expectedDictionary.ShouldDeepEqual(result);
         }
 
         [Fact]
@@ -498,53 +510,42 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var expectedLinks = new Dictionary<string, IEnumerable<Link>>
+            var expectedDictionary = new Dictionary<string, object>
             {
                 {
-                    "orders", new List<Link>
+                    "_links",
+                    new Dictionary<string, IEnumerable<IDictionary<string, object>>>
                     {
-                        new Link("/api/orders/123", "Order"),
-                        new Link("/api/orders/456", "Order")
+                        {
+                            "orders",
+                            new List<Dictionary<string, object>>
+                            {
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/orders/123" },
+                                        { "title", "Order" }
+                                    }
+                                },
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/orders/456" },
+                                        { "title", "Order" }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             };
 
-            expectedLinks.ShouldDeepEqual(result.Links);
-        }
-
-        [Fact]
-        public void Reading_ContentWithLinksAndNoProperties_PopulatesLinksCollectionOnly()
-        {
-            var jsonString = $"{{ " +
-                                $"\"_links\": " +
-                                    $"{{ " +
-                                        $"\"self\": " +
-                                            $"{{ " +
-                                                $"\"href\": \"/api/categories\"," +
-                                                $"\"title\": \"Some Title\"," +
-                                                $"\"templated\": false" +
-                                            $"}} " +
-                                    $"}} " +
-                            $"}}";
-
-            var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
-            serializeOptions.WriteIndented = true;
-
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
-
-            Assert.NotNull(result.Links);
-            Assert.NotNull(result.Properties);
-            Assert.NotNull(result.EmbeddedItems);
-
-            Assert.Single(result.Links);
-            Assert.Empty(result.Properties);
-            Assert.Empty(result.EmbeddedItems);
+            expectedDictionary.ShouldDeepEqual(result);
         }
 
         [Fact]
@@ -562,20 +563,17 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var exectedEmbeddedItems = new Dictionary<string, IEnumerable<HalReader>>
+            var expectedDictionary = new Dictionary<string, object>
             {
-                { 
-                    "something",
-                    new List<HalReader>
+                { "_embedded", new Dictionary<string, object>
                     {
-                        new HalReader
                         {
-                            Properties = new Dictionary<string, object>
+                            "something", new Dictionary<string, object>
                             {
                                 { "string-Property", "Some string" },
                                 { "integer-Property", 123}
@@ -585,12 +583,10 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                 }
             };
 
-            Assert.NotNull(result.EmbeddedItems);
-            Assert.Empty(result.Links);
-            Assert.Empty(result.Properties);
-            Assert.Equal(expected: 1, actual: result.EmbeddedItems.Count);
-            Assert.Single(result.EmbeddedItems["something"]);
-            exectedEmbeddedItems.ShouldDeepEqual(result.EmbeddedItems);
+            Assert.NotNull(result);
+            Assert.Equal(expected: 1, actual: result.Count);
+            Assert.Equal(expected: 1, actual: ((IDictionary<string, object>)result["_embedded"]).Count);
+            expectedDictionary.ShouldDeepEqual(result);
         }
 
         [Fact]
@@ -613,34 +609,28 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var exectedEmbeddedItems = new Dictionary<string, IEnumerable<HalReader>>
+            var expectedDictionary = new Dictionary<string, object>
             {
                 {
-                    "something",
-                    new List<HalReader>
+                    "_embedded",
+                    new Dictionary<string, IDictionary<string, object>>
                     {
-                        new HalReader
                         {
-                            Properties = new Dictionary<string, object>
+                            "something",
+                            new Dictionary<string, object>
                             {
                                 { "string-Property", "Some string" },
-                                { "integer-Property", 123}
+                                { "integer-Property", 123 }
                             }
-                        }
-                    }
-                },
-                {
-                    "something-Else",
-                    new List<HalReader>
-                    {
-                        new HalReader
-                        {
-                            Properties = new Dictionary<string, object>
+                        },
+                         {
+                            "something-Else",
+                            new Dictionary<string, object>
                             {
                                 { "bool-Property", true },
                                 { "date-Property", new DateTime(2020, 7, 9, 10, 51, 12)}
@@ -650,13 +640,10 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                 }
             };
 
-            Assert.NotNull(result.EmbeddedItems);
-            Assert.Equal(expected: 2, actual: result.EmbeddedItems.Count);
-            Assert.Single(result.EmbeddedItems["something"]);
-            Assert.Single(result.EmbeddedItems["something-Else"]);
-            Assert.Empty(result.Links);
-            Assert.Empty(result.Properties);
-            exectedEmbeddedItems.ShouldDeepEqual(result.EmbeddedItems);
+            Assert.NotNull(result);
+            Assert.Equal(expected: 1, actual: result.Count);
+            Assert.Equal(expected: 2, actual: ((IDictionary<string, object>)result["_embedded"]).Count);
+            expectedDictionary.ShouldDeepEqual(result);
         }
 
         [Fact]
@@ -680,43 +667,49 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var exectedEmbeddedItems = new Dictionary<string, IEnumerable<HalReader>>
+            var expectedDictionary = new Dictionary<string, object>
             {
                 {
-                    "something",
-                    new List<HalReader>
+                    "_embedded",
+                    new Dictionary<string, IEnumerable<IDictionary<string, object>>>
                     {
-                        new HalReader
                         {
-                            Properties = new Dictionary<string, object>
+                            "something",
+                            new List<Dictionary<string, object>>
                             {
-                                { "string-Property", "Some string" },
-                                { "integer-Property", 123}
-                            }
-                        },
-                        new HalReader
-                        {
-                            Properties = new Dictionary<string, object>
-                            {
-                                { "string-Property", "Some different string" },
-                                { "integer-Property", 321}
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "string-Property", "Some string" },
+                                        { "integer-Property", 123 }
+                                    }
+                                },
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "string-Property", "Some different string" },
+                                        { "integer-Property", 321 }
+                                    }
+                                }
                             }
                         }
                     }
                 }
             };
 
-            Assert.NotNull(result.EmbeddedItems);
-            Assert.Equal(expected: 1, actual: result.EmbeddedItems.Count);
-            Assert.Equal(expected: 2, actual: result.EmbeddedItems["something"].Count());
-            Assert.Empty(result.Links);
-            Assert.Empty(result.Properties);
-            exectedEmbeddedItems.ShouldDeepEqual(result.EmbeddedItems);
+            var embeddedItemDictionary = (IDictionary<string, object>)result["_embedded"];
+            var embeddedItemSetDictionary = (List<Dictionary<string, object>>)embeddedItemDictionary["something"];
+
+            Assert.NotNull(result);
+            Assert.Equal(expected: 1, actual: result.Count);
+            Assert.Equal(expected: 1, actual: embeddedItemDictionary.Count);
+            Assert.Equal(expected: 2, actual: embeddedItemSetDictionary.Count);
+            expectedDictionary.ShouldDeepEqual(result);
         }
 
         [Fact]
@@ -743,30 +736,33 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var exectedEmbeddedItems = new Dictionary<string, IEnumerable<HalReader>>
+            var expectedDictionary = new Dictionary<string, object>
             {
-                {
-                    "something",
-                    new List<HalReader>
+                { "_embedded", new Dictionary<string, object>
                     {
-                        new HalReader
                         {
-                            Links = new Dictionary<string, IEnumerable<Link>>
+                            "something", new Dictionary<string, object>
                             {
-                                { 
-                                    "self", new List<Link> 
+                                {
+                                    "_links",
+                                    new Dictionary<string, IDictionary<string, object>>
                                     {
-                                        new Link("/api/categories", "Some Title")
-                                    } 
-                                }
-                            },
-                            Properties = new Dictionary<string, object>
-                            {
+                                        {
+                                            "self",
+                                            new Dictionary<string, object>
+                                            {
+                                                { "href", "/api/categories" },
+                                                { "title", "Some Title" },
+                                                { "templated", false }
+                                            }
+                                        }
+                                    }
+                                },
                                 { "string-Property", "Some string" },
                                 { "integer-Property", 123}
                             }
@@ -775,82 +771,11 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                 }
             };
 
-            Assert.NotNull(result.EmbeddedItems);
-            Assert.Equal(expected: 1, actual: result.EmbeddedItems.Count);
-            Assert.Single(result.EmbeddedItems["something"]);
-
-            Assert.Empty(result.Links);
-            Assert.Empty(result.Properties);
-
-            exectedEmbeddedItems.ShouldDeepEqual(result.EmbeddedItems);
+            expectedDictionary.ShouldDeepEqual(result);
         }
 
         [Fact]
         public void Reading_ContentWithEmbeddedItemContaininEmbeddedItem_AddsTheEmbeddedItemAndItsOwnEmbeddedItemToResult()
-        {
-            var jsonString = $"{{ " +
-                                $"\"_embedded\": " +
-                                    $"{{ " +
-                                        $"\"something\": " +
-                                            $"{{ " +
-                                                $"\"string-Property\": \"Some string\"," +
-                                                $"\"integer-Property\": 123," +
-                                                $"\"_embedded\": " +
-                                                    $"{{ " +
-                                                        $"\"embedded-in-embedded-item\": " +
-                                                            $"{{ " +
-                                                                $"\"bool-Property\": true" +
-                                                            $"}}" +
-                                                    $"}} " +
-                                            $"}}" +                                       
-                                    $"}} " +
-                            $"}}";
-
-            var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
-            serializeOptions.WriteIndented = true;
-
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
-
-            var expectedDictionary = new Dictionary<string, IEnumerable<HalReader>>
-            {
-                {
-                    "something",
-                    new List<HalReader>
-                    {
-                        new HalReader
-                        {
-                            Properties = new Dictionary<string, object>
-                            {
-                                { "string-Property", "Some string" },
-                                { "integer-Property", 123}
-                            },
-                            EmbeddedItems = new Dictionary<string, IEnumerable<HalReader>>
-                            {
-                                { 
-                                    "embedded-in-embedded-item",
-                                    new List<HalReader>
-                                    {
-                                        new HalReader
-                                        {
-                                            Properties = new Dictionary<string, object>
-                                            {
-                                                { "bool-Property", true }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            };
-
-            expectedDictionary.ShouldDeepEqual(result.EmbeddedItems);
-        }
-
-        [Fact]
-        public void Reading_ComplexExample_Works()
         {
             var jsonString = $"{{ " +
                                 $"\"_embedded\": " +
@@ -871,35 +796,30 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             $"}}";
 
             var serializeOptions = new JsonSerializerOptions();
-            serializeOptions.Converters.Add(new Deserializer());
+            serializeOptions.Converters.Add(new HalResponseConvertor());
             serializeOptions.WriteIndented = true;
 
-            var result = JsonSerializer.Deserialize<HalReader>(jsonString, serializeOptions);
+            var result = JsonSerializer.Deserialize<IDictionary<string,object>>(jsonString, serializeOptions);
 
-            var expectedDictionary = new Dictionary<string, IEnumerable<HalReader>>
+            var expectedDictionary = new Dictionary<string, object>
             {
-                {
-                    "something",
-                    new List<HalReader>
+                { "_embedded", new Dictionary<string, object>
                     {
-                        new HalReader
                         {
-                            Properties = new Dictionary<string, object>
+                            "something", new Dictionary<string, object>
                             {
+
                                 { "string-Property", "Some string" },
-                                { "integer-Property", 123}
-                            },
-                            EmbeddedItems = new Dictionary<string, IEnumerable<HalReader>>
-                            {
+                                { "integer-Property", 123},
                                 {
-                                    "embedded-in-embedded-item",
-                                    new List<HalReader>
+                                    "_embedded",
+                                    new Dictionary<string, IDictionary<string, object>>
                                     {
-                                        new HalReader
                                         {
-                                            Properties = new Dictionary<string, object>
+                                            "embedded-in-embedded-item",
+                                            new Dictionary<string, object>
                                             {
-                                                { "bool-Property", true }
+                                                { "bool-Property",true }
                                             }
                                         }
                                     }
@@ -910,8 +830,7 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                 }
             };
 
-            expectedDictionary.ShouldDeepEqual(result.EmbeddedItems);
+            expectedDictionary.ShouldDeepEqual(result);
         }
-
     }
 }
