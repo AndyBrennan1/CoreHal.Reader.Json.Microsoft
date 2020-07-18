@@ -38,7 +38,9 @@ namespace CoreHal.Reader.Json.Microsoft
             }
             else
             {
-                result = JsonSerializer.Deserialize<IDictionary<string, object>>(rawResponse, this.JsonSerializerOptions);
+                result = 
+                    JsonSerializer.Deserialize<IDictionary<string, object>>(
+                        rawResponse, this.JsonSerializerOptions);
 
             }
 

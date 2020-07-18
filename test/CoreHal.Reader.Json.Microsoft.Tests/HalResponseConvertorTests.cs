@@ -415,7 +415,7 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             {
                 {
                     "_links",
-                    new Dictionary<string, IDictionary<string, object>>
+                    new Dictionary<string, object>
                     {
                         {
                             "self",
@@ -463,7 +463,7 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             {
                 {
                     "_links",
-                    new Dictionary<string, IDictionary<string, object>>
+                    new Dictionary<string, object>
                     {
                         {
                             "self",
@@ -519,7 +519,7 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
             {
                 {
                     "_links",
-                    new Dictionary<string, IEnumerable<IDictionary<string, object>>>
+                    new Dictionary<string, object>
                     {
                         {
                             "orders",
@@ -537,6 +537,168 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                                     {
                                         { "href", "/api/orders/456" },
                                         { "title", "Order" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            expectedDictionary.ShouldDeepEqual(result);
+        }
+
+        [Fact]
+        public void Reading_ContentWithTwoRelsEachWithTwoLinks_AddsTheLinksToTheLinksCollection()
+        {
+            var jsonString = $"{{ " +
+                                $"\"_links\": " +
+                                    $"{{ " +
+                                        $"\"orders\": " +
+                                            $"[" +
+                                                $"{{ " +
+                                                    $"\"href\": \"/api/orders/123\"," +
+                                                    $"\"title\": \"Order\"" +
+                                                $"}}, " +
+                                                $"{{ " +
+                                                    $"\"href\": \"/api/orders/456\"," +
+                                                    $"\"title\": \"Order\"" +
+                                                $"}} " +
+                                            $"]," +
+                                        $"\"products\": " +
+                                            $"[" +
+                                                $"{{ " +
+                                                    $"\"href\": \"/api/product/product1\"," +
+                                                    $"\"title\": \"Product\"" +
+                                                $"}}, " +
+                                                $"{{ " +
+                                                    $"\"href\": \"/api/product/product2\"," +
+                                                    $"\"title\": \"Product\"" +
+                                                $"}} " +
+                                            $"]" +
+                                    $"}} " +
+                            $"}}";
+
+            var serializeOptions = new JsonSerializerOptions();
+            serializeOptions.Converters.Add(new HalResponseConvertor());
+            serializeOptions.WriteIndented = true;
+
+            var result = JsonSerializer.Deserialize<IDictionary<string, object>>(jsonString, serializeOptions);
+
+            var expectedDictionary = new Dictionary<string, object>
+            {
+                {
+                    "_links",
+                    new Dictionary<string, object>
+                    {
+                        {
+                            "orders",
+                            new List<Dictionary<string, object>>
+                            {
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/orders/123" },
+                                        { "title", "Order" }
+                                    }
+                                },
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/orders/456" },
+                                        { "title", "Order" }
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            "products",
+                            new List<Dictionary<string, object>>
+                            {
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/product/product1" },
+                                        { "title", "Product" }
+                                    }
+                                },
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/product/product2" },
+                                        { "title", "Product" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+
+            expectedDictionary.ShouldDeepEqual(result);
+        }
+
+        [Fact]
+        public void Reading_ContentWithTwoRelsOneWithTwoLinksOtherWithJustOne_AddsTheLinksToTheLinksCollection()
+        {
+            var jsonString = $"{{ " +
+                                $"\"_links\": " +
+                                    $"{{ " +
+                                        $"\"self\": " +
+                                            $"{{ " +
+                                                $"\"href\": \"/api/me\"," +
+                                                $"\"title\": \"Me\"" +
+                                            $"}}, " +
+                                        $"\"products\": " +
+                                            $"[" +
+                                                $"{{ " +
+                                                    $"\"href\": \"/api/product/product1\"," +
+                                                    $"\"title\": \"Product\"" +
+                                                $"}}, " +
+                                                $"{{ " +
+                                                    $"\"href\": \"/api/product/product2\"," +
+                                                    $"\"title\": \"Product\"" +
+                                                $"}} " +
+                                            $"]" +
+                                    $"}} " +
+                            $"}}";
+
+            var serializeOptions = new JsonSerializerOptions();
+            serializeOptions.Converters.Add(new HalResponseConvertor());
+            serializeOptions.WriteIndented = true;
+
+            var result = JsonSerializer.Deserialize<IDictionary<string, object>>(jsonString, serializeOptions);
+
+            var expectedDictionary = new Dictionary<string, object>
+            {
+                {
+                    "_links",
+                    new Dictionary<string, object>
+                    {
+                        {
+                            "self", 
+                            new Dictionary<string, object>
+                            {
+                                { "href", "/api/me" },
+                                { "title", "Me" }
+                            }
+                        },
+                        {
+                            "products",
+                            new List<Dictionary<string, object>>
+                            {
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/product/product1" },
+                                        { "title", "Product" }
+                                    }
+                                },
+                                {
+                                    new Dictionary<string, object>
+                                    {
+                                        { "href", "/api/product/product2" },
+                                        { "title", "Product" }
                                     }
                                 }
                             }
@@ -750,7 +912,7 @@ namespace CoreHal.Reader.Json.Microsoft.Tests
                             {
                                 {
                                     "_links",
-                                    new Dictionary<string, IDictionary<string, object>>
+                                    new Dictionary<string, object>
                                     {
                                         {
                                             "self",

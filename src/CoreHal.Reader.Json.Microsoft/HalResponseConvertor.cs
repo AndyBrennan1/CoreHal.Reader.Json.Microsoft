@@ -7,9 +7,6 @@ namespace CoreHal.Reader.Json.Microsoft
 {
     public class HalResponseConvertor : JsonConverter<IDictionary<string,object>>
     {
-        private const string LinkHRefKey = "href";
-        private const string LinkTitleKey = "title";
-
         private static readonly Dictionary<Guid, ObjectTracker> objectCreationTracker = new Dictionary<Guid, ObjectTracker>();
 
         public override IDictionary<string, object> Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
@@ -29,9 +26,6 @@ namespace CoreHal.Reader.Json.Microsoft
                     responseData,
                     ref thisPropertyName);
             }
-
-            //ProcessLinks(halReader);
-            //ProcessEmbeddedItesmAndSets(halReader);
 
             return responseData;
         }
@@ -95,54 +89,6 @@ namespace CoreHal.Reader.Json.Microsoft
         //        keyValuePair.Key,
         //        new List<HalReader> { embeddedItemHalReader }
         //        );
-        //}
-
-        //private static void ProcessLinks(HalReader halReader)
-        //{
-        //    if (halReader.Properties.ContainsKey(LinksKey))
-        //    {
-        //        var linksDictionary = (Dictionary<string, object>)halReader.Properties[LinksKey];
-
-        //        foreach (var keyValuePair in linksDictionary)
-        //        {
-        //            if (keyValuePair.Value is IDictionary)
-        //            {
-        //                var linksList = new List<Link>
-        //                {
-        //                    GetLink((IDictionary<string, object>)keyValuePair.Value)
-        //                };
-
-        //                halReader.Links.Add(keyValuePair.Key, linksList);
-        //            }
-        //            else
-        //            {
-        //                var linkPropertySet = (IEnumerable<Dictionary<string, object>>)keyValuePair.Value;
-
-        //                var thisSetOfLink = new List<Link>();
-        //                foreach(var linkPropertyDictionary in linkPropertySet)
-        //                {
-        //                    thisSetOfLink.Add(GetLink(linkPropertyDictionary));
-        //                }
-
-        //                halReader.Links.Add(keyValuePair.Key, new List<Link>(thisSetOfLink));
-        //            }
-        //        }
-
-        //        halReader.Properties.Remove(LinksKey);
-        //    }
-        //}
-
-        //private static Link GetLink(IDictionary<string, object> linkProperties)
-        //{
-        //    var href = linkProperties[LinkHRefKey].ToString();
-
-        //    var title = linkProperties.ContainsKey(LinkTitleKey)
-        //                ? linkProperties[LinkTitleKey].ToString()
-        //                : null;
-
-        //    var link = new Link(href, title);
-
-        //    return link;
         //}
 
         private static void ProcessJsonElement(
