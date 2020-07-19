@@ -30,67 +30,6 @@ namespace CoreHal.Reader.Json.Microsoft
             return responseData;
         }
 
-        //private static void ProcessEmbeddedItesmAndSets(HalReader halReader)
-        //{
-        //    if (halReader.Properties.ContainsKey(EmbeddedItemsKey))
-        //    {
-        //        var embeddedItemDictionary = (Dictionary<string, object>)halReader.Properties[EmbeddedItemsKey];
-
-        //        foreach (var keyValuePair in embeddedItemDictionary)
-        //        {
-        //            if (keyValuePair.Value is IDictionary)
-        //            {
-        //                ProcessSingularEmbededItem(halReader, keyValuePair);
-        //            }
-        //            else
-        //            {
-        //                ProcessEmbeddedItemSet(halReader, keyValuePair);
-        //            }
-        //        }
-
-        //        halReader.Properties.Remove(EmbeddedItemsKey);
-        //    }
-        //}
-
-        //private static void ProcessEmbeddedItemSet(HalReader halReader, KeyValuePair<string, object> keyValuePair)
-        //{
-        //    var embededItemSetItems = (IEnumerable<Dictionary<string, object>>)keyValuePair.Value;
-
-        //    var embeddedItemSet = new List<HalReader>();
-
-        //    foreach (var embeddedItem in embededItemSetItems)
-        //    {
-        //        var embeddedItemHalReader = new HalReader
-        //        {
-        //            Properties = embeddedItem
-        //        };
-
-        //        ProcessLinks(embeddedItemHalReader);
-        //        ProcessEmbeddedItesmAndSets(embeddedItemHalReader);
-        //        embeddedItemSet.Add(embeddedItemHalReader);
-        //    }
-
-        //    halReader.EmbeddedItems.Add(
-        //        keyValuePair.Key,
-        //        new List<HalReader>(embeddedItemSet));
-        //}
-
-        //private static void ProcessSingularEmbededItem(HalReader halReader, KeyValuePair<string, object> keyValuePair)
-        //{
-        //    var embeddedItemHalReader = new HalReader
-        //    {
-        //        Properties = (Dictionary<string, object>)keyValuePair.Value
-        //    };
-
-        //    ProcessLinks(embeddedItemHalReader);
-        //    ProcessEmbeddedItesmAndSets(embeddedItemHalReader);
-
-        //    halReader.EmbeddedItems.Add(
-        //        keyValuePair.Key,
-        //        new List<HalReader> { embeddedItemHalReader }
-        //        );
-        //}
-
         private static void ProcessJsonElement(
             Guid previousObjectTrackerId,
             ref Utf8JsonReader reader, 
