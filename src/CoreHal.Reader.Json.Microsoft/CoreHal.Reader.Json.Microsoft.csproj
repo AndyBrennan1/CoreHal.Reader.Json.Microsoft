@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CoreHal.Reader" Version="1.0.0-CI-20200719-004515" />
+    <PackageReference Include="CoreHal.Reader" Version="1.0.0-CI-20200720-000125" />
     <PackageReference Include="Validation" Version="2.4.22" />
   </ItemGroup>
 
